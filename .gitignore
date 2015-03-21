@@ -73,3 +73,10 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+*.d
+*.lst
+software/avr/main_atmega8.eep
+software/avr/main_atmega8.lss
+software/avr/main_atmega8.map
+software/avr/main_atmega8.sym
+software/avr/main_atmega8.elf

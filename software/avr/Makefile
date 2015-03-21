@@ -37,7 +37,7 @@ MCU = atmega8
 FORMAT = ihex
 
 # Target file name (without extension).
-TARGET = main
+TARGET = main_$(MCU)
 
 # Optimization level, can be [0, 1, 2, 3, s]. 0 turns off optimization.
 # (Note: 3 is not always the best optimization level. See avr-libc FAQ.)
@@ -45,11 +45,11 @@ OPT = s
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c
+SRC = 
 
 # If there is more than one source file, append them above, or modify and
 # uncomment the following:
-SRC += a2d.c pwm.c rtc.c usart.c global.c  lcd.c
+SRC += main.c a2d.c pwm.c rtc.c usart.c global.c  lcd.c
 
 # You can also wrap lines by appending a backslash to the end of the line:
 #SRC += baz.c \
