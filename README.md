@@ -12,7 +12,8 @@ PCB<br>
 ![max solder pcb]( https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/IMG_4370.JPG) <br>
 With nice enclosure and LCD<br>
 ![maxsolder anclosure](https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/img_20140730_225220.jpg) <br>
-
+You can also just use this scale to set the temperature instead of the LCD
+![maxsolder anclosure](https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/scale_solder.PNG) <br>
 Ask me for PCBs !! I had 10 made and some are available<br>
 ![PCBs]( https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/IMG_4367.JPG) <br>
 
