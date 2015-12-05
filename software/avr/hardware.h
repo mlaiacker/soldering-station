@@ -105,7 +105,8 @@
 //	#define UART_BAUD_RATE	115200
 // Baudrate
 #elif defined (__AVR_ATmega8__)
-	#define UART_BAUD_RATE	9600L
+//	#define UART_BAUD_RATE	9600L
+	#define UART_BAUD_RATE	38400L
 	//#define UART_UBRRL	(103) // 9600@16MHz U2X = 0
 //	#define UART_UBRRL	(25) // 38400@16MHz U2X = 0
 #endif

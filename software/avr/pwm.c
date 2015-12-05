@@ -47,8 +47,14 @@ void pwmSet1A(signed short value)
 {
 	if (value > PWM_MAX_1A) value = PWM_MAX_1A;
 	if (value < 0) value = 0;
-	OCR1AL = value;
 	OCR1AH = value>>8;
+	OCR1AL = value;
+}
+
+unsigned short pwmGet1A(void)
+{
+	//unsigned short val =OCR1AH;
+	return OCR1A;
 }
 
 #endif

@@ -42,8 +42,8 @@ struct {
 #define GAIN_KI 1L
 #define SOLDER_MAX 	4100
 #define SOLDER_MAX_PWM	(PWM_MAX_1A*2/3)
-#define SOLDER_TEMP_STANDBY	(2000)
-#define SOLDER_TIMEOUT	600
+#define SOLDER_TEMP_STANDBY	(2000) // degC*10 2000==200.0degC
+#define SOLDER_TIMEOUT	600 // seconds
 
 typedef struct
 {
@@ -176,7 +176,7 @@ void init(void){
 
 unsigned int paramChecksum(solder_param_t *param)
 {
-	unsigned int result = 0xabcdef,i;
+	unsigned int result = 0xabcd,i;
 	for(i=0;i<sizeof(*param)-sizeof(param->checksum);i++)
 	{
 		result += ((unsigned char*)param)[i];
@@ -191,7 +191,7 @@ void uartOutput(void)
 {
 	//usart_puts_prog(modeName[charger.mode]);
 	//usartNum(Time/100,5,1); // Ladezeit
-	usartNum(solder.temp,4,1); // Ausgangsspanung aktuell
+	usartNum(solder.temp,4,1); // Temp
 	usartNum(solder.temp_des,4,1); // Ausgangsstrom
 	usartNum(solder.pwm,3,0);
 	usartNum(solder.Toff,4,0);
@@ -255,19 +255,28 @@ int main(void)
 			if(solder.state==1)
 			{
 				pwmSet1A(0);
-			} else if (solder.state==2)
+			} else if (solder.state==4)
 			{
-				solder.temp =  (solder.temp + (a2dConvert10bit(ADC_CH_TEMP) + a2dConvert10bit(ADC_CH_TEMP) + a2dConvert10bit(ADC_CH_TEMP) + a2dConvert10bit(ADC_CH_TEMP))*ADC_U_REF*10L/(ADC_MAX*4L))/2;
+//				solder.temp =  (solder.temp + a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L))/2;
+				solder.temp =  a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L);
+				if(solder.temp>SOLDER_MAX)
+				{
+					solder.state = 1;
+				}
+			} else if (solder.state==5)
+			{
+//				solder.temp =  (solder.temp + a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L))/2;
+				solder.temp =  a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L);
 				if(solder.temp>SOLDER_MAX)
 				{
 					solder.state = 1;
 				}
 			}
-			if (solder.state>=2)
+			if (solder.state>=5)
 			{
 				pwmSet1A(solder.pwm);
 			}
-			if (solder.state > 10) solder.state = 0;
+			if (solder.state > 16) solder.state = 0;
 
 			if(solder.on && solder.error == 0)
 			{
@@ -276,6 +285,7 @@ int main(void)
 				if(solder.pwm >= -SOLDER_MAX_PWM && solder.pwm < SOLDER_MAX_PWM)
 				{
 					solder.i += solder.error_signal*GAIN_KI/10L;//*INT_CONTROL/1000L;
+					if(solder.i<0) solder.i = 0;
 				}
 				if(solder.pwm>SOLDER_MAX_PWM) solder.pwm=SOLDER_MAX_PWM;
 				if(solder.pwm<0) solder.pwm=0;
@@ -343,8 +353,7 @@ int main(void)
 					solder.standby = 0;
 				} else
 				{
-					char standby = (solder.pwm < 40) &&
-					(solder.error_signal < 50) && (abs(solder.poti - solder.poti_old)<10);
+					char standby = (solder.pwm < solder.temp_des/65) && (solder.error_signal < 50) && (abs(solder.poti - solder.poti_old)<10);
 
 					solder.standby = einschaltverz(standby,	SOLDER_TIMEOUT, &solder.Tstandby);
 					if(einschaltverz(standby,SOLDER_TIMEOUT*10, &solder.Toff)) solder.on = 0;
@@ -352,10 +361,10 @@ int main(void)
 				solder.poti_old = solder.poti;
 			}
 			maindata.tSekunde += 1000L;
+			maindata.blinken = !maindata.blinken;
 			#ifdef UART
 				if(!maindata.menu_on) uartOutput();
 			#endif
-			maindata.blinken = !maindata.blinken;
 		}
 
 	}// for(ever) 

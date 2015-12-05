@@ -32,6 +32,7 @@
 
 # MCU name
 MCU = atmega8
+AVRDUDE_PORT = com6 -b 38400  # programmer connected to serial device
 
 # Output format. (can be srec, ihex, binary)
 FORMAT = ihex
@@ -143,7 +144,7 @@ AVRDUDE_PROGRAMMER = stk500v1
 #AVRDUDE_PROGRAMMER = stk500v2
 
 
-AVRDUDE_PORT = com6 -b 38400  # programmer connected to serial device
+#AVRDUDE_PORT = com6 -b 38400  # programmer connected to serial device
 #AVRDUDE_PORT = lpt1	# programmer connected to parallel port
 
 AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex

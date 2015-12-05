@@ -13,6 +13,7 @@
 #ifdef PWM_MAX_1A
 void pwmInit1A(void);
 void pwmSet1A(signed short value);
+unsigned short pwmGet1A(void);
 #endif
 
 #endif

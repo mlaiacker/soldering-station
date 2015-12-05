@@ -114,6 +114,7 @@ CC         = avr-gcc
 override CFLAGS        = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) -D$(PRODUCT) -D$(AVR_FREQ) $(DEFS)
 override LDFLAGS       = -Wl,-Map,$(PROGRAM).map,$(LDSECTION)
 
+
 OBJCOPY        = avr-objcopy
 OBJDUMP        = avr-objdump
 
@@ -123,6 +124,18 @@ program: $(PROGRAM).hex
 	$(ISPFUSES)
 	$(ISPFLASH)
 
+.PHONY: program_all
+program_all: 
+	@cat ../main_$(MCU_TARGET).hex | gawk '/^:00000001FF/ == 0' > $(PROGRAM)_main.hex
+	@cat $(PROGRAM).hex >> $(PROGRAM)_main.hex
+	cp $(PROGRAM)_main.hex $(PROGRAM)_$(PRODUCT)_$(AVR_FREQ)_$(BUILD).hex
+#	@$(AVR_SIZE) $@
+	$(ISPFUSES)
+	$(ISPFLASH)
+
+
+
+	
 $(PROGRAM).elf: $(OBJ)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
 
