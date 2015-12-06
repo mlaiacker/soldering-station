@@ -341,6 +341,25 @@ int main(void)
 					lcdNum(solder.pwm,3,0);
 				}
 			}
+			lcdGotoY(1);
+			lcdPrint("PWM:");
+			if(solder.error)
+			{
+				lcdPrint("ERR");
+			} else
+			{
+				if(maindata.blinken)
+				{
+					if(solder.standby)
+					{
+						lcdPrint("STA");
+					}
+				} else
+				{
+					lcdNum(solder.pwm,3,0);
+				}
+			}
+
 			maindata.tDisplay += MENU_DISPLAY_INT;
 		}
 		if(maindata.tSekunde <= Time) // jede sekunde
