@@ -84,3 +84,7 @@ software/avr/main_atmega8.elf
 software/avr/bootloader/max-boot.bin
 *.map
 software/avr/bootloader/max-boot.srec
+*.srec
+software/avr/bootloader/max-boot.elf
+doc.docx
+software/avr/make_main.cmd

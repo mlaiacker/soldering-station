@@ -16,6 +16,17 @@
 #include "pwm.h"
 #include "rtc.h"
 
+#define GAIN_KP 60L
+#define GAIN_KI 1L
+#define SOLDER_MAX 	4100	// degC*10 2000==200.0degC
+#define SOLDER_TEMP_STANDBY	(2000) // degC*10 2000==200.0degC
+#define SOLDER_TIMEOUT	600 // seconds
+#define MENU_DISPLAY_INT	50 //ms
+#define INT_CONTROL			16 //ms
+#define SOLDER_MAX_PWM	(PWM_MAX_1A*2/3)
+//#define LCD_2X16	1
+
+
 struct
 {
 	t_Time tSekunde,tDisplay,tControl;
@@ -38,12 +49,6 @@ struct {
 	unsigned short poti, poti_old;
 } solder;
 
-#define GAIN_KP 60L
-#define GAIN_KI 1L
-#define SOLDER_MAX 	4100
-#define SOLDER_MAX_PWM	(PWM_MAX_1A*2/3)
-#define SOLDER_TEMP_STANDBY	(2000) // degC*10 2000==200.0degC
-#define SOLDER_TIMEOUT	600 // seconds
 
 typedef struct
 {
@@ -64,8 +69,6 @@ typedef struct
 
 solder_param_t param;
 solder_param_t param_ee EEPROM;
-#define MENU_DISPLAY_INT	50
-#define INT_CONTROL			16
 
 void uartOutput(void);
 unsigned int paramChecksum(solder_param_t *param);
@@ -258,7 +261,7 @@ int main(void)
 			} else if (solder.state==4)
 			{
 //				solder.temp =  (solder.temp + a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L))/2;
-				solder.temp =  a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L);
+				solder.temp =  ((a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L)) + solder.temp)/2;
 				if(solder.temp>SOLDER_MAX)
 				{
 					solder.state = 1;
@@ -266,7 +269,7 @@ int main(void)
 			} else if (solder.state==5)
 			{
 //				solder.temp =  (solder.temp + a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L))/2;
-				solder.temp =  a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L);
+				solder.temp =  ((a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L)) + solder.temp)/2;
 				if(solder.temp>SOLDER_MAX)
 				{
 					solder.state = 1;
@@ -318,13 +321,17 @@ int main(void)
 				}
 			}
 			lcdGotoY(0);
-			lcdPrint("Tip:");
+			lcdPrint("Temp:");
 			lcdNum(solder.temp/10,3,0);
 			lcdDataWrite(223);
 			lcdPrint("C ");
 			lcdNum(solder.temp_des/10,3,0);
 			lcdDataWrite(223);
 			lcdPrint("C ");
+#ifdef LCD_2X16
+			lcdGotoY(1); // goto 2. line
+			lcdPrint(" PWM:");
+#endif
 			if(solder.error)
 			{
 				lcdPrint("ERR");
@@ -338,28 +345,10 @@ int main(void)
 					}
 				} else
 				{
-					lcdNum(solder.pwm,3,0);
+					lcdNum(MIN(99,solder.pwm*10/((SOLDER_MAX_PWM)/10)),2,0);
+					lcdPrint("%");
 				}
 			}
-			lcdGotoY(1);
-			lcdPrint("PWM:");
-			if(solder.error)
-			{
-				lcdPrint("ERR");
-			} else
-			{
-				if(maindata.blinken)
-				{
-					if(solder.standby)
-					{
-						lcdPrint("STA");
-					}
-				} else
-				{
-					lcdNum(solder.pwm,3,0);
-				}
-			}
-
 			maindata.tDisplay += MENU_DISPLAY_INT;
 		}
 		if(maindata.tSekunde <= Time) // jede sekunde

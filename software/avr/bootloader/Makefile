@@ -44,7 +44,7 @@ ifeq ($(PRODUCT),MEGA8)
 MCU_TARGET = atmega8
 LDSECTION  = --section-start=.text=0x1c00
 ISPFUSES    = avrdude -c $(ISPTOOL) -p m8 -P $(ISPPORT) $(ISPSPEED) -V -U hfuse:w:0xd2:m -U lfuse:w:0x24:m
-ISPFLASH    = avrdude -c $(ISPTOOL) -p m8 -P $(ISPPORT) $(ISPSPEED) -V -U flash:w:$(PROGRAM)_$(PRODUCT)_$(AVR_FREQ)_$(BUILD).hex
+ISPFLASH    = avrdude -c $(ISPTOOL) -p m8 -P $(ISPPORT) $(ISPSPEED) -U flash:w:$(PROGRAM)_$(PRODUCT)_$(AVR_FREQ)_$(BUILD).hex
 endif
 
 ifeq ($(PRODUCT),MEGA168)
