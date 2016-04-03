@@ -24,7 +24,7 @@
 #define MENU_DISPLAY_INT	50 //ms
 #define INT_CONTROL			16 //ms
 #define SOLDER_MAX_PWM	(PWM_MAX_1A*2/3)
-//#define LCD_2X16	1
+#define LCD_2X16	1
 
 
 struct

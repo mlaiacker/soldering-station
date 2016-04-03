@@ -27,7 +27,7 @@ AVR_FREQ   = F8000000
 # enter the parameters for the UISP isp tool
 # for an stk500 at com1
 ISPTOOL	   = stk500v2
-ISPPORT	   = com10
+ISPPORT	   = com4
 ISPSPEED   = -b 115200
 # or an stk200 at lpt1
 #ISPTOOL    = stk200
@@ -146,11 +146,14 @@ clean:
 lst:  $(PROGRAM).lst
 
 # Display size of file.
-sizebefore:
-	@if [ -f $(PROGRAM).elf ]; then echo; echo $(MSG_SIZE_BEFORE); $(ELFSIZE); echo; fi
 
-sizeafter:
-	@if [ -f $(PROGRAM).elf ]; then echo; echo $(MSG_SIZE_AFTER); $(ELFSIZE); echo; fi
+sizebefore: $(PROGRAM).elf 
+	@echo $(MSG_SIZE_BEFORE) 
+	@$(ELFSIZE)
+
+sizeafter: $(PROGRAM).elf
+	@echo $(MSG_SIZE_AFTER)
+	@$(ELFSIZE)
 
 
 %.lst: %.elf
