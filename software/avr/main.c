@@ -18,7 +18,11 @@
 
 #define GAIN_KP 60L
 #define GAIN_KI 1L
-#define SOLDER_MAX 	4100	// degC*10 2000==200.0degC
+#define POTI_OFF	10			// bis zu diesem Wert Heizung aus
+#define POTI_TEMP_START	200L	// Beginn das Poti temperatur bereich (L damit es keinen 16bit integer overflow gibt bei 1024*200/1024)
+#define POTI_TEMP_END	400L	// Ende des Poti Temeratur bereich (Hardware erlaubt ca. 415 max)
+
+#define SOLDER_MAX 	4100	// degC*10 2000==200.0degC Heizung abschalten wenn gemessene Temperatur so hoch ist
 #define SOLDER_TEMP_STANDBY	(2000) // degC*10 2000==200.0degC
 #define SOLDER_TIMEOUT	600 // seconds
 #define MENU_DISPLAY_INT	50 //ms
@@ -303,11 +307,12 @@ int main(void)
 		if(maindata.tDisplay <= Time)
 		{
 			solder.poti  = (a2dConvert10bit(ADC_CH_POTI) + a2dConvert10bit(ADC_CH_POTI))/2;
-			if(solder.poti<10)
+			if(solder.poti<POTI_OFF)
 			{
+				// Lötstation ist an aber Heizung ist aus
 				solder.on = 0;
 				solder.temp_des = 0;
-				solder.error = 0;
+				solder.error = 0; // fehler zurücksetzen wenn poti auf 0
 				solder.standby = 0;
 			} else
 			{
@@ -316,21 +321,24 @@ int main(void)
 					solder.temp_des = SOLDER_TEMP_STANDBY;
 				} else
 				{
+					// Soll-Temperatur Berechnung aus Wert vom Poti
 					solder.on = 1;
-					solder.temp_des = (200 + solder.poti*200L/ADC_MAX)*10;
+					solder.temp_des = (POTI_TEMP_START + (solder.poti-POTI_OFF)*(POTI_TEMP_END-POTI_TEMP_START)/(ADC_MAX-POTI_OFF))*10;
 				}
 			}
 			lcdGotoY(0);
+			// Ist-Temperatur
 			lcdPrint("Temp:");
 			lcdNum(solder.temp/10,3,0);
 			lcdDataWrite(223);
 			lcdPrint("C ");
+			// Soll-Temperatur
 			lcdNum(solder.temp_des/10,3,0);
 			lcdDataWrite(223);
 			lcdPrint("C ");
 #ifdef LCD_2X16
 			lcdGotoY(1); // goto 2. line
-			lcdPrint(" PWM:");
+			lcdPrint(" PWM:"); // Den text nur wenn 2x16 LCD angeschlossen
 #endif
 			if(solder.error)
 			{
@@ -341,10 +349,12 @@ int main(void)
 				{
 					if(solder.standby)
 					{
+						// Standby Zustand anzeigen
 						lcdPrint("STA");
 					}
 				} else
 				{
+					// PWM in Prozent anzeigen 0..99
 					lcdNum(MIN(99,solder.pwm*10/((SOLDER_MAX_PWM)/10)),2,0);
 					lcdPrint("%");
 				}
@@ -357,16 +367,24 @@ int main(void)
 			{
 				if(einschaltverz(solder.pwm >= SOLDER_MAX_PWM, 20, &solder.Tpwm))
 				{
+					// bei zu lange volle power muss ein fehler vorliegen und die Heizung wird abgeschaltet
 					solder.error = 1;
 					solder.standby = 0;
 				} else
 				{
+					/* Standby Bedingungen:
+					 * 1: abs(solder.poti - solder.poti_old)<10 Soll Temperatur Einstellung ändert sich nicht.
+					 * 2: (solder.pwm < solder.temp_des/65)  Der PWM wert zum heizen ist klein (wenn man den Lötkolben benutzt muss ja stärker geheizt werden als wenn er nur rum liegt)
+					 * 3: (solder.error_signal < 50) Die ist Temperatur ist maximal 5 Grad C kleiner als die soll Temperatur.
+					 *
+					 */
 					char standby = (solder.pwm < solder.temp_des/65) && (solder.error_signal < 50) && (abs(solder.poti - solder.poti_old)<10);
-
+					// standby bedingung muss immer erfüllt sein
 					solder.standby = einschaltverz(standby,	SOLDER_TIMEOUT, &solder.Tstandby);
+					// heizung komplett abgestellt wenn man den Lötkolben vergisst abzuschalten.
 					if(einschaltverz(standby,SOLDER_TIMEOUT*10, &solder.Toff)) solder.on = 0;
 				}
-				solder.poti_old = solder.poti;
+				solder.poti_old = solder.poti; // Poti Stellung merken für standby timeout
 			}
 			maindata.tSekunde += 1000L;
 			maindata.blinken = !maindata.blinken;
