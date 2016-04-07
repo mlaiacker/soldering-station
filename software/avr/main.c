@@ -16,19 +16,25 @@
 #include "pwm.h"
 #include "rtc.h"
 
+#define LCD_2X16	1
+// for control
 #define GAIN_KP 60L
 #define GAIN_KI 1L
+// for user input
 #define POTI_OFF	10L			// bis zu diesem Wert Heizung aus
 #define POTI_TEMP_START	200L	// Beginn das Poti temperatur bereich (L damit es keinen 16bit integer overflow gibt bei 1024*200/1024)
 #define POTI_TEMP_END	400L	// Ende des Poti Temeratur bereich (Hardware erlaubt ca. 415 max)
 
 #define SOLDER_MAX 	4100	// degC*10 2000==200.0degC Heizung abschalten wenn gemessene Temperatur so hoch ist
 #define SOLDER_TEMP_STANDBY	(2000) // degC*10 2000==200.0degC
-#define SOLDER_TIMEOUT	600 // seconds
+// standby
+#define SOLDER_TIMEOUT		600 // seconds
+#define SOLDER_TIMEOUT_OFF 	(SOLDER_TIMEOUT*10)
+// max heating power
+#define SOLDER_MAX_PWM	(PWM_MAX_1A*2/3)
+
 #define MENU_DISPLAY_INT	50 //ms
 #define INT_CONTROL			16 //ms
-#define SOLDER_MAX_PWM	(PWM_MAX_1A*2/3)
-#define LCD_2X16	1
 
 
 struct
@@ -261,10 +267,11 @@ int main(void)
 			solder.state++;
 			if(solder.state==1)
 			{
+				// heizung aus um Temperatur zu messen
 				pwmSet1A(0);
 			} else if (solder.state==4)
 			{
-//				solder.temp =  (solder.temp + a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L))/2;
+				// Temperatur messen und Heizung immer noch aus.
 				solder.temp =  ((a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L)) + solder.temp)/2;
 				if(solder.temp>SOLDER_MAX)
 				{
@@ -272,7 +279,7 @@ int main(void)
 				}
 			} else if (solder.state==5)
 			{
-//				solder.temp =  (solder.temp + a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L))/2;
+				// Temperatur noch mal messen und Ergebnisse mitteln
 				solder.temp =  ((a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L)) + solder.temp)/2;
 				if(solder.temp>SOLDER_MAX)
 				{
@@ -281,19 +288,24 @@ int main(void)
 			}
 			if (solder.state>=5)
 			{
+				// Heizung wieder aktivieren
 				pwmSet1A(solder.pwm);
 			}
-			if (solder.state > 16) solder.state = 0;
+			if (solder.state > 16) solder.state = 0; // neue messung starten
 
 			if(solder.on && solder.error == 0)
 			{
+				// PI Temperaturregelung
 				solder.error_signal = (solder.temp_des - solder.temp);
 				solder.pwm = (solder.i + solder.error_signal*GAIN_KP)/100L;
+				// anti wind-up
 				if(solder.pwm >= -SOLDER_MAX_PWM && solder.pwm < SOLDER_MAX_PWM)
 				{
+					// Integral anteil
 					solder.i += solder.error_signal*GAIN_KI/10L;//*INT_CONTROL/1000L;
 					if(solder.i<0) solder.i = 0;
 				}
+				// min und max abfangen
 				if(solder.pwm>SOLDER_MAX_PWM) solder.pwm=SOLDER_MAX_PWM;
 				if(solder.pwm<0) solder.pwm=0;
 			} else
@@ -376,13 +388,12 @@ int main(void)
 					 * 1: abs(solder.poti - solder.poti_old)<10 Soll Temperatur Einstellung ändert sich nicht.
 					 * 2: (solder.pwm < solder.temp_des/65)  Der PWM wert zum heizen ist klein (wenn man den Lötkolben benutzt muss ja stärker geheizt werden als wenn er nur rum liegt)
 					 * 3: (solder.error_signal < 50) Die ist Temperatur ist maximal 5 Grad C kleiner als die soll Temperatur.
-					 *
 					 */
 					char standby = (solder.pwm < solder.temp_des/65) && (solder.error_signal < 50) && (abs(solder.poti - solder.poti_old)<10);
 					// standby bedingung muss immer erfüllt sein
 					solder.standby = einschaltverz(standby,	SOLDER_TIMEOUT, &solder.Tstandby);
 					// heizung komplett abgestellt wenn man den Lötkolben vergisst abzuschalten.
-					if(einschaltverz(standby,SOLDER_TIMEOUT*10, &solder.Toff)) solder.on = 0;
+					if(einschaltverz(standby,SOLDER_TIMEOUT_OFF, &solder.Toff)) solder.on = 0;
 				}
 				solder.poti_old = solder.poti; // Poti Stellung merken für standby timeout
 			}
