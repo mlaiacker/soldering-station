@@ -23,20 +23,20 @@ Ask me for PCBs !! I had 10 made and some are available<br>
 
 ### Hast du noch Platinen? 
 
-ja noch 
-10 (2.4.2016)
-9 (5.4.2016)
+ja noch: <br>
+10 (2.4.2016)<br>
+9 (5.4.2016)<br>
 Ich kann auch gleich programmierten atmega8 und OPA und LCD dazu legen
 
 ### Was Kostet? 
 10
 
 ### hex bauen?
-Das erstellen der main.hex geht über das Makefile mit "make all" dazu musst du den gcc avr Compiler installiert haben siehe dazu :http://www.mikrocontroller.net/articles/AVR-GCC
+Das erstellen der main.hex geht Ã¼ber das Makefile mit "make all" dazu musst du den gcc avr Compiler installiert haben siehe dazu :http://www.mikrocontroller.net/articles/AVR-GCC
 
 ### flashen?
-Mit "make program" wird dann avrdude aufgerufen um über die serielle Schnittstelle ein neues Programm zu laden.
-Dazu musst du wahrscheinlich den Port (com1) ändern im Makefile
+Mit "make program" wird dann avrdude aufgerufen um Ã¼ber die serielle Schnittstelle ein neues Programm zu laden.
+Dazu musst du wahrscheinlich den Port (com1) Ã¤ndern im Makefile
 
 AVRDUDE_PORT = com1 -b 38400 # programmer connected to serial device
 
