@@ -18,7 +18,7 @@
 
 #define GAIN_KP 60L
 #define GAIN_KI 1L
-#define POTI_OFF	10			// bis zu diesem Wert Heizung aus
+#define POTI_OFF	10L			// bis zu diesem Wert Heizung aus
 #define POTI_TEMP_START	200L	// Beginn das Poti temperatur bereich (L damit es keinen 16bit integer overflow gibt bei 1024*200/1024)
 #define POTI_TEMP_END	400L	// Ende des Poti Temeratur bereich (Hardware erlaubt ca. 415 max)
 
@@ -53,7 +53,7 @@ struct {
 	unsigned short poti, poti_old;
 } solder;
 
-
+// not used yet !!
 typedef struct
 {
 	unsigned char pwm_max; // in prozent 10..99
