@@ -17,6 +17,8 @@
 #include "rtc.h"
 
 #define LCD_2X16	1
+
+//#define LCD_SHOW_TIMEOUT // show timout counter (only on 2x16 LCD)
 // for control
 #define GAIN_KP 60L
 #define GAIN_KI 1L
@@ -29,10 +31,12 @@
 #define SOLDER_TEMP_STANDBY	(2000) // degC*10 2000==200.0degC
 // gain
 #define TEMP_GAIN	(4980L)
-#define TEMP_OFFSET	(-5)
+#define TEMP_OFFSET	(-8)
 // standby
 #define SOLDER_TIMEOUT		600 // seconds
 #define SOLDER_TIMEOUT_OFF 	(SOLDER_TIMEOUT*10)
+#define SOLDER_TIMEOUT_PWM_DIFF		20	// max pwm deviation around 10 second mean
+#define SOLDER_TIMEOUT_TEMP_ERROR	50	// max temp deviation around setpoint in deg/10
 // max heating power
 #define SOLDER_MAX_PWM	(PWM_MAX_1A*2/3)
 
@@ -50,6 +54,7 @@ struct
 
 struct {
 	signed short pwm;
+	signed short pwm_mean;
 	signed short temp_des;
 	signed short temp;
 	int error_signal,i;
@@ -360,13 +365,10 @@ int main(void)
 				lcdPrint("ERR");
 			} else
 			{
-				if(maindata.blinken)
+				if(maindata.blinken && solder.standby)
 				{
-					if(solder.standby)
-					{
-						// Standby Zustand anzeigen
-						lcdPrint("STA");
-					}
+					// Standby Zustand anzeigen
+					lcdPrint("STA");
 				} else
 				{
 					// PWM in Prozent anzeigen 0..99
@@ -374,6 +376,10 @@ int main(void)
 					lcdPrint("%");
 				}
 			}
+#if defined(LCD_2X16) && defined(LCD_SHOW_TIMEOUT)
+			lcdPrint(" T:");
+			lcdNum(solder.Toff,5,0); // standby timeout counter [s]
+#endif
 			maindata.tDisplay += MENU_DISPLAY_INT;
 		}
 		if(maindata.tSekunde <= Time) // jede sekunde
@@ -387,12 +393,14 @@ int main(void)
 					solder.standby = 0;
 				} else
 				{
+					solder.pwm_mean = (solder.pwm_mean*9 + solder.pwm)/10;
 					/* Standby Bedingungen:
 					 * 1: abs(solder.poti - solder.poti_old)<10 Soll Temperatur Einstellung ändert sich nicht.
 					 * 2: (solder.pwm < solder.temp_des/65)  Der PWM wert zum heizen ist klein (wenn man den Lötkolben benutzt muss ja stärker geheizt werden als wenn er nur rum liegt)
 					 * 3: (solder.error_signal < 50) Die ist Temperatur ist maximal 5 Grad C kleiner als die soll Temperatur.
 					 */
-					char standby = (solder.pwm < solder.temp_des/65) && (solder.error_signal < 50) && (abs(solder.poti - solder.poti_old)<10);
+//					char standby = (solder.pwm < solder.temp_des/65) && (solder.error_signal < 50) && (abs(solder.poti - solder.poti_old)<10);
+					char standby = (abs(solder.pwm - solder.pwm_mean)<SOLDER_TIMEOUT_PWM_DIFF || solder.pwm<=1) && (solder.error_signal <= SOLDER_TIMEOUT_TEMP_ERROR) && (abs(solder.poti - solder.poti_old)<=11);
 					// standby bedingung muss immer erfüllt sein
 					solder.standby = einschaltverz(standby,	SOLDER_TIMEOUT, &solder.Tstandby);
 					// heizung komplett abgestellt wenn man den Lötkolben vergisst abzuschalten.
