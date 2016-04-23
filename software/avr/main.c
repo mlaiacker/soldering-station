@@ -27,6 +27,9 @@
 
 #define SOLDER_MAX 	4100	// degC*10 2000==200.0degC Heizung abschalten wenn gemessene Temperatur so hoch ist
 #define SOLDER_TEMP_STANDBY	(2000) // degC*10 2000==200.0degC
+// gain
+#define TEMP_GAIN	(10L)
+#define TEMP_OFFSET	(0)
 // standby
 #define SOLDER_TIMEOUT		600 // seconds
 #define SOLDER_TIMEOUT_OFF 	(SOLDER_TIMEOUT*10)
@@ -272,7 +275,7 @@ int main(void)
 			} else if (solder.state==4)
 			{
 				// Temperatur messen und Heizung immer noch aus.
-				solder.temp =  ((a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L)) + solder.temp)/2;
+				solder.temp =  ((a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*TEMP_GAIN/(ADC_MAX*1L) + TEMP_OFFSET) + solder.temp)/2;
 				if(solder.temp>SOLDER_MAX)
 				{
 					solder.state = 1;
@@ -280,7 +283,7 @@ int main(void)
 			} else if (solder.state==5)
 			{
 				// Temperatur noch mal messen und Ergebnisse mitteln
-				solder.temp =  ((a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*10L/(ADC_MAX*1L)) + solder.temp)/2;
+				solder.temp =  ((a2dConvert10bit(ADC_CH_TEMP)*ADC_U_REF*TEMP_GAIN/(ADC_MAX*1L) + TEMP_OFFSET) + solder.temp)/2;
 				if(solder.temp>SOLDER_MAX)
 				{
 					solder.state = 1;
