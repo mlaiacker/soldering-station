@@ -51,3 +51,14 @@ kopliziert. mit extra Adapter per ISP und dann mit "make programm_all" im bootlo
 ### Wo bekomme ich IC3 her?
 
 TLC 272 DIP bei reichelt
+
+### Temperatur stimmt nicht
+
+Die auf dem Display angezeigte Temperatur ist zu hoch bzw entspricht nicht der an der Lötspitze gemessenen. 
+Bitte einen 47k Widerstand von Pin 3 an IC3 nach Masse löten und neue Software laden und wenn nötig
+```C
+#define TEMP_GAIN	(4980L)
+#define TEMP_OFFSET	(-8)
+```
+anpassen.
+![PCBs](https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/patch_resistor.JPG) <br>
