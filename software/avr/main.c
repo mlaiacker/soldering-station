@@ -171,6 +171,9 @@ void init(void){
 		eeprom_write_block(&param, &param_ee, sizeof(param));
 	}
 
+	usartPrint("# Max Solder Build"__DATE__);
+	usartPrint("Version:"GIT_VERSION);
+
 #ifdef LCD_CLR
 	rtcDelay(500);
 	wdt_reset();
