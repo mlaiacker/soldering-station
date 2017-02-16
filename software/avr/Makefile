@@ -73,6 +73,8 @@ ASRC =
 EXTRAINCDIRS = 
 
 
+GIT_VERSION := $(shell git describe --abbrev=4 --dirty --always --tags)
+
 # Optional compiler flags.
 #  -g:        generate debugging information (for GDB, or for COFF conversion)
 #  -O*:       optimization level
@@ -92,7 +94,7 @@ $(patsubst %,-I%,$(EXTRAINCDIRS))
 #   gnu99 = C99 + GNU extensions. See GCC manual for more information.
 #CFLAGS += -std=c89
 #CFLAGS += -std=gnu89
-#CFLAGS += -std=c99
+CFLAGS += -DGIT_VERSION=\"$(GIT_VERSION)\"
 CFLAGS += -std=gnu99
 
 

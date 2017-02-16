@@ -16,7 +16,7 @@
 #include "pwm.h"
 #include "rtc.h"
 
-#define LCD_2X16	1
+//#define LCD_2X16	1
 
 //#define LCD_SHOW_TIMEOUT // show timout counter (only on 2x16 LCD)
 // for control
@@ -181,6 +181,12 @@ void init(void){
 	#elif defined (__AVR_ATmega8__)
 		lcdPrint("   MAX-Solder    ");
 	#endif
+#ifdef LCD_2X16
+	lcdGotoY(1);
+	lcdPrint(__DATE__)
+#endif
+	wdt_reset();
+	rtcDelay(500);
 	wdt_reset();
 	rtcDelay(500);
 	wdt_reset();
