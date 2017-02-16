@@ -254,15 +254,15 @@ int main(void)
     uint8_t ch;
     uint16_t w;
 
-    asm volatile("nop\n\t");
+//    asm volatile("nop\n\t");
 
     /* set pin direction for bootloader pin */
     BL_PORT |= _BV(BL);
     BL_DDR &= ~_BV(BL);
     DDRB |= 2; // PWM to output
     PORTB &=~2; // pwm out low
-    asm volatile("nop\n\t");
-    asm volatile("nop\n\t");
+//    asm volatile("nop\n\t");
+//    asm volatile("nop\n\t");
 
     /* check if flash is programmed already, if not start bootloader anyway */
 //#if defined (__AVR_ATmega168__)
@@ -286,6 +286,9 @@ int main(void)
     UBRRH = (F_CPU/(BAUD_RATE*16L)-1) >> 8;
 //	UBRRL = 103; // 9600@16MHz
     UCSRB = _BV(TXEN)|_BV(RXEN);
+	putch('A');
+	putch('V');
+	putch('R');
 #if defined (__AVR_ATmega168__)
 		putch(0x14);
 		putch('A');

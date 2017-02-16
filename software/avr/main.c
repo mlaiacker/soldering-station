@@ -16,9 +16,12 @@
 #include "pwm.h"
 #include "rtc.h"
 
-//#define LCD_2X16	1
+#define LCD_2X16	1
 
-//#define LCD_SHOW_TIMEOUT // show timout counter (only on 2x16 LCD)
+#ifdef LCD_2X16
+#define LCD_SHOW_TIMEOUT // show timout counter (only on 2x16 LCD)
+#endif
+
 // for control
 #define GAIN_KP 60L
 #define GAIN_KI 1L
@@ -148,7 +151,7 @@ void init(void){
 	sei(); // interupt enable
 
 	//TASTE_M_INIT;
-	wdt_enable(WDTO_1S);
+	wdt_enable(WDTO_2S);
 
 	eeprom_read_block(&param,&param_ee,sizeof(param));
 	if(param.checksum != paramChecksum(&param))
@@ -171,13 +174,14 @@ void init(void){
 		eeprom_write_block(&param, &param_ee, sizeof(param));
 	}
 
-	usartPrint("# Max Solder Build"__DATE__);
-	usartPrint("Version:"GIT_VERSION);
+	usartPrint("# Max Solder Build date "__DATE__);
+	usartPrint(" Git Version: "GIT_VERSION"\r\n");
 
 #ifdef LCD_CLR
-	rtcDelay(500);
 	wdt_reset();
+	rtcDelay(500);
 	lcdInit();
+	rtcDelay(500);
 	lcdGotoY(0);
 	#if defined (__AVR_ATmega168__)
 		lcdPrint("   MAX-Solder16  ");
@@ -186,7 +190,7 @@ void init(void){
 	#endif
 #ifdef LCD_2X16
 	lcdGotoY(1);
-	lcdPrint(__DATE__)
+	lcdPrint("B:"__DATE__);
 #endif
 	wdt_reset();
 	rtcDelay(500);
@@ -258,7 +262,7 @@ int main(void)
 {
 	init();
 	// watchdog einschalten
-	
+	char last_char=0,c=0;
 	for(;;)
 	{
 		wdt_reset();
@@ -267,10 +271,16 @@ int main(void)
 		{
 			if(!maindata.menu_on)
 			{
-				if(usart_getc()=='m'){
+				last_char =c;
+				c=usart_getc();
+				if(c=='m'){
 					maindata.menu_on = 1;
 					uartMenu(0);
 				}
+				if(last_char==0x30 && c==0x20){
+					while(1) { c++;};
+				}
+
 			} else
 			{
 				solder.on = 0;

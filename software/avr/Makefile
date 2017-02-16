@@ -32,8 +32,11 @@
 
 # MCU name
 MCU = atmega8
-AVRDUDE_PORT = com1 -b 38400  # programmer connected to serial device
+AVRDUDE_PORT = com41 -b 38400  # programmer connected to serial device
+AVRDUDE_PROGRAMMER = stk500v1
+#AVRDUDE_PROGRAMMER = stk500v2
 
+F_CPU= 8000000
 # Output format. (can be srec, ihex, binary)
 FORMAT = ihex
 
@@ -73,7 +76,7 @@ ASRC =
 EXTRAINCDIRS = 
 
 
-GIT_VERSION := $(shell git describe --abbrev=4 --dirty --always --tags)
+GIT_VERSION := $(shell git describe --abbrev=4 --always --tags)
 
 # Optional compiler flags.
 #  -g:        generate debugging information (for GDB, or for COFF conversion)
@@ -93,7 +96,7 @@ $(patsubst %,-I%,$(EXTRAINCDIRS))
 #   Unremark just one line below to set the language standard to use.
 #   gnu99 = C99 + GNU extensions. See GCC manual for more information.
 #CFLAGS += -std=c89
-#CFLAGS += -std=gnu89
+CFLAGS += -DF_CPU=$(F_CPU)
 CFLAGS += -DGIT_VERSION=\"$(GIT_VERSION)\"
 CFLAGS += -std=gnu99
 
@@ -142,7 +145,7 @@ LDFLAGS += -lm
 #
 #AVRDUDE_PROGRAMMER = jespers-original
 #AVRDUDE_PROGRAMMER = stk200
-AVRDUDE_PROGRAMMER = stk500v1
+#AVRDUDE_PROGRAMMER = stk500v1
 #AVRDUDE_PROGRAMMER = stk500v2
 
 
