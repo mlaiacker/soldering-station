@@ -5,7 +5,7 @@ http://www.martin-kumm.de/wiki/doku.php?id=Projects:SMD_Solderstation
 
 I made it simpler and cheaper. Instead of using an Arduino I use a ATmega8. This design doesn't use SMD instead a single sided PCB for easy assembly and cheap PCB production. The PCB is only 70x50mm. Instead of using two buttons to adjust the temperature I use a poti and optionally you can use a standard HD44780 compatible LCD to display temperatures. It runs on plain c (no arduino) and also includes supports a bootloader for easy firmware upgrade. The Bootloader has to be programmed befor soldering the mega8 into the PCB. The bootloader is activaded using the Boot pins on the PCB (short PD2 to ground)
 
-http://mlaiacker.no-ip.org/Elektronik/Soldering%20Station/
+http://mlaiacker.mooo.com/Elektronik/Soldering%20Station/
 
 http://fpv-community.de/showthread.php?41335-DIY-SMD-L%F6tstation-Ersatz-f%FCr-%28WELLER%29
 
