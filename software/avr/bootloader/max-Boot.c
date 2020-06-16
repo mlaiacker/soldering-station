@@ -268,14 +268,14 @@ int main(void)
 //#if defined (__AVR_ATmega168__)
 //    if(pgm_read_byte_near(0x0000) != 0xFF)
 //#endif
-    {
+    if(!(UCSRA & _BV(RXC)) && (DDRD & (1<<5))==0 ){
 	/* check if bootloader pin is set high */
 		if(bit_is_set(BL_PIN, BL))
 		{
            app_start();
         }
     }
-
+    for(w=1;w!=0;w++) asm volatile("nop\n\t");
 #ifdef LED
     LED_DDR |= _BV(LED);
 //    LED_PORT |= _BV(LED); // turn on led

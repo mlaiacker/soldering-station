@@ -118,7 +118,7 @@ override LDFLAGS       = -Wl,-Map,$(PROGRAM).map,$(LDSECTION)
 OBJCOPY        = avr-objcopy
 OBJDUMP        = avr-objdump
 
-all: sizebefore $(PROGRAM).elf sizeafter lst text
+all: $(PROGRAM).elf sizeafter lst text
 
 program: $(PROGRAM).hex
 	$(ISPFUSES)

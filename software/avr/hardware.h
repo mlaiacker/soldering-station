@@ -19,6 +19,7 @@
 
 #define ADC_CH_TEMP		1
 #define ADC_CH_POTI		0
+#define ADC_CH_VBAT		2
 
 
 // Refferenzspannung 2.500V

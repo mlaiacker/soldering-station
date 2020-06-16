@@ -27,6 +27,7 @@
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1273007291" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\opt\WinAVR-20100110\avr\include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\avr\WinAVR-20100110\avr\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\opt\avr8-gnu-toolchain\avr\include&quot;"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.391839416" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
@@ -37,6 +38,7 @@
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.2010269736" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\opt\WinAVR-20100110\avr\include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\avr\WinAVR-20100110\avr\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\opt\avr8-gnu-toolchain\avr\include&quot;"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.742261795" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
@@ -47,6 +49,7 @@
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.11332622" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\opt\WinAVR-20100110\avr\include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\avr\WinAVR-20100110\avr\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\opt\avr8-gnu-toolchain\avr\include&quot;"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.2140856034" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>

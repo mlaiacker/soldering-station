@@ -4,6 +4,7 @@
 * Maximilian Laiacker post@mlaiacker.de http://mlaiacker.de/
 *
 */
+#include <stdint.h>
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <avr/wdt.h> 
@@ -19,7 +20,7 @@
 #define LCD_2X16	1
 
 #ifdef LCD_2X16
-#define LCD_SHOW_TIMEOUT // show timout counter (only on 2x16 LCD)
+//#define LCD_SHOW_TIMEOUT // show timout counter (only on 2x16 LCD)
 #endif
 
 // for control
@@ -63,11 +64,15 @@ struct {
 	int error_signal,i;
 	char error;
 	char standby;
+	uint8_t	vinConnected; // voltage divider for input voltage measurement detected
 	short Tpwm, Tstandby, Toff;
 
 	char state;
 	char on;
 	unsigned short poti, poti_old;
+	uint16_t	vin_dV; // input voltage in deci Volt
+	uint16_t	vinSum;
+	uint16_t    vinCount;
 } solder;
 
 // not used yet !!
@@ -151,9 +156,10 @@ void init(void){
 	sei(); // interupt enable
 
 	//TASTE_M_INIT;
-	wdt_enable(WDTO_2S);
+	wdt_enable(WDTO_500MS);
 
 	eeprom_read_block(&param,&param_ee,sizeof(param));
+	wdt_reset();
 	if(param.checksum != paramChecksum(&param))
 	{
 	 // defaults
@@ -173,15 +179,16 @@ void init(void){
 		param.checksum = paramChecksum(&param);
 		eeprom_write_block(&param, &param_ee, sizeof(param));
 	}
-
-	usartPrint("# Max Solder Build date "__DATE__);
-	usartPrint(" Git Version: "GIT_VERSION"\r\n");
+	solder.vinConnected = 1;
+	wdt_reset();
+	usartPrint("# Max Solder build date:"__DATE__);
+	usartPrint(", Git version: "GIT_VERSION"\r\n");
 
 #ifdef LCD_CLR
 	wdt_reset();
-	rtcDelay(500);
 	lcdInit();
-	rtcDelay(500);
+	rtcDelay(100);
+	wdt_reset();
 	lcdGotoY(0);
 	#if defined (__AVR_ATmega168__)
 		lcdPrint("   MAX-Solder16  ");
@@ -193,15 +200,18 @@ void init(void){
 	lcdPrint("B:"__DATE__);
 #endif
 	wdt_reset();
-	rtcDelay(500);
+	rtcDelay(300);
 	wdt_reset();
-	rtcDelay(500);
+	rtcDelay(300);
 	wdt_reset();
-/*	lcdGotoY(0);
-	lcdPrint("Version:");
-	lcdNum(PROG_VERSION,2,1);
-	rtcDelay(500);
-	wdt_reset();*/
+	rtcDelay(300);
+	wdt_reset();
+	lcdGotoY(1);
+	lcdPrint("Git:"GIT_VERSION"     ");
+	rtcDelay(300);
+	wdt_reset();
+	rtcDelay(300);
+	wdt_reset();
 #endif
 
 }// init end
@@ -229,6 +239,7 @@ void uartOutput(void)
 	usartNum(solder.temp_des,4,1); // Ausgangsstrom
 	usartNum(solder.pwm,3,0);
 	usartNum(solder.Toff,4,0);
+	usartNum(solder.vin_dV,3,1);
 //	usartNum(solder.i,4,0);
 	usartPutc('\r');
 	usartPutc('\n');
@@ -278,7 +289,11 @@ int main(void)
 					uartMenu(0);
 				}
 				if(last_char==0x30 && c==0x20){
-					while(1) { c++;};
+					rtcDelay(300);
+					usartPutc(0x14);
+					rtcDelay(30);
+					usartPutc(0x10);
+					while(1) { c++;}; // reset into bootloader
 				}
 
 			} else
@@ -346,6 +361,8 @@ int main(void)
 		if(maindata.tDisplay <= Time)
 		{
 			solder.poti  = (a2dConvert10bit(ADC_CH_POTI) + a2dConvert10bit(ADC_CH_POTI))/2;
+			solder.vinSum += a2dConvert10bit(ADC_CH_VBAT);
+			solder.vinCount++;
 			if(solder.poti<POTI_OFF)
 			{
 				// Lötstation ist an aber Heizung ist aus
@@ -399,17 +416,48 @@ int main(void)
 			lcdPrint(" T:");
 			lcdNum(solder.Toff,5,0); // standby timeout counter [s]
 #endif
+#if defined(LCD_2X16) && !defined(LCD_SHOW_TIMEOUT)
+			if(solder.vin_dV>50)
+			{
+				lcdPrint(" ");
+				if(solder.Toff>9 && (solder.Toff%2==0))
+				{
+					lcdDataWrite('0'+(solder.Toff/100)%10);
+				} else lcdPrint(" ");
+
+				lcdNum(solder.vin_dV, 4, 1); // input voltage
+				lcdPrint("V");
+			}
+#endif
+
 			maindata.tDisplay += MENU_DISPLAY_INT;
 		}
 		if(maindata.tSekunde <= Time) // jede sekunde
 		{
+			if(solder.vinConnected)
+			{
+				solder.vin_dV = (solder.vinSum/solder.vinCount)*50/93;
+				if(solder.vin_dV<50 && solder.vinCount>5)
+				{
+					solder.vinConnected = 0;
+				}
+			}
+			else
+				solder.vin_dV = 0;
+			solder.vinSum = 0;
+			solder.vinCount = 0;
 			if(solder.on)
 			{
+				if(solder.vin_dV>50 && solder.vin_dV<75 && solder.vinConnected)
+				{
+					solder.error = 1;
+				}
 				if(einschaltverz(solder.pwm >= SOLDER_MAX_PWM, 20, &solder.Tpwm))
 				{
 					// bei zu lange volle power muss ein fehler vorliegen und die Heizung wird abgeschaltet
 					solder.error = 1;
 					solder.standby = 0;
+					solder.Tstandby = 0;
 				} else
 				{
 					solder.pwm_mean = (solder.pwm_mean*9 + solder.pwm)/10;
@@ -426,6 +474,8 @@ int main(void)
 					if(einschaltverz(standby,SOLDER_TIMEOUT_OFF, &solder.Toff)) solder.on = 0;
 				}
 				solder.poti_old = solder.poti; // Poti Stellung merken für standby timeout
+			} else {
+				solder.Tstandby = 0;
 			}
 			maindata.tSekunde += 1000L;
 			maindata.blinken = !maindata.blinken;
