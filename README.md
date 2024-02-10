@@ -11,9 +11,9 @@ http://fpv-community.de/showthread.php?41335-DIY-SMD-L%F6tstation-Ersatz-f%FCr-%
 
 ## PCB layout
 
-![Borad layout](https://github.com/mlaiacker/soldering-station/blob/master/doc/images/board_v12.png?raw=true)
+![Borad layout](doc/images/board_v12.png?raw=true)
 
-[board layout pdf hardware/eagle/rt_solder_simple_V1.2.brd.pdf](https://github.com/mlaiacker/soldering-station/blob/master/hardware/eagle/rt_solder_simple_V1.2.brd.pdf?raw=true)
+[board layout pdf hardware/eagle/rt_solder_simple_V1.2.brd.pdf](hardware/eagle/rt_solder_simple_V1.2.brd.pdf?raw=true)
 
 
 ## Bill of Materials for PCB
@@ -49,13 +49,13 @@ http://fpv-community.de/showthread.php?41335-DIY-SMD-L%F6tstation-Ersatz-f%FCr-%
 
 ## Images
 PCB<br>
-![max solder pcb]( https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/IMG_4370.JPG) <br>
+![max solder pcb](doc/images/IMG_4370.JPG) <br>
 With nice enclosure and LCD<br>
-![maxsolder anclosure](https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/img_20140730_225220.jpg) <br>
+![maxsolder anclosure](doc/images/img_20140730_225220.jpg) <br>
 You can also just use this scale to set the temperature instead of the LCD
-![maxsolder anclosure](https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/scale_solder.PNG) <br>
+![maxsolder anclosure](doc/images/scale_solder.PNG) <br>
 Ask me for PCBs !! I had 10 made and some are available<br>
-![PCBs]( https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/IMG_4367.JPG) <br>
+![PCBs]( doc/images/IMG_4367.JPG) <br>
 
 ## FAQ
 
@@ -81,8 +81,6 @@ AVRDUDE_PORT = com1 -b 38400 # programmer connected to serial device
 
 Computer per TTL Seriell mit der Platine verbinden einen jumper auf die "Boot" pins stecken und einschalten dann wird der Bootloader aktiviert.
 
-https://github.com/mlaiacker/soldering-station/blob/master/doc/images/board_v12.png
-
 ### bootloader ?
 
 kopliziert. mit extra Adapter per ISP und dann mit "make programm_all" im bootloader Ordner. (avrdude und DIAMEX USB ISP bei mir)
@@ -100,4 +98,5 @@ Bitte einen 47k Widerstand von Pin 3 an IC3 nach Masse löten und neue Software 
 #define TEMP_OFFSET	(-8)
 ```
 anpassen.
-![PCBs](https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/patch_resistor.JPG) <br>
+
+![PCB patch resitor placement](doc/images/patch_resistor.JPG) <br>
