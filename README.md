@@ -60,8 +60,9 @@ Ich kann auch gleich programmierten atmega8 und OPA und LCD dazu legen
 | 1   | Solder       | W237-3E         | W237-3E      | X2                   | WAGO SREW CLAMP             | optional                      |      |
 
 
-![Borad layout](https://github.com/mlaiacker/soldering-station/blob/master/doc/images/board_v12.png)
+![Borad layout](https://github.com/mlaiacker/soldering-station/blob/master/doc/images/board_v12.png?raw=true)
 
+[board layout pdf hardware/eagle/rt_solder_simple_V1.2.brd.pdf](https://github.com/mlaiacker/soldering-station/blob/master/hardware/eagle/rt_solder_simple_V1.2.brd.pdf?raw=true)
 ### hex bauen?
 Das erstellen der main.hex geht über das Makefile mit "make all" dazu musst du den gcc avr Compiler installiert haben siehe dazu :http://www.mikrocontroller.net/articles/AVR-GCC
 
