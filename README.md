@@ -4,6 +4,8 @@
 
 https://www.weller-tools.com/eu/de/industrielles-loeten/produkte/loetspitzen/rtm-013-s
 
+Power or Battery supply 10-14V DC up to 3A or so needed.
+
 This project is based on the work of Martin Kumm.
 
 http://www.martin-kumm.de/wiki/doku.php?id=Projects:SMD_Solderstation
@@ -46,8 +48,11 @@ http://fpv-community.de/showthread.php?41335-DIY-SMD-L%F6tstation-Ersatz-f%FCr-%
 | 1   | 470R         | R-EU_0207/10    | 0207/10      | R2                   | RESISTOR,                   |                               |      |
 | 1   | 68k          | R-EU_0207/10    | 0207/10      | R5                   | RESISTOR,                   |                               |      |
 | 2   | 5k6          | R-EU_0207/10    | 0207/10      | R4, R7               | RESISTOR,                   |                               |      |
-| 1   | 47k          | R-EU_0207/10    | 0207/10      | bodge                | RESISTOR,                   | to fix tmperature mesaurement |      |
 | 4   | 1k           | R-EU_0207/10    | 0207/10      | R3, R8, R11, R12     | RESISTOR,                   |                               |      |
+| 1   | 47k          | R-EU_0207/10    | 0207/10      | bodge                | RESISTOR,                   | to fix tmperature measurement |      |
+| 1   | 10M          | R-EU_0207/10    | 0207/10      | bodge                | RESISTOR,                   | to fix tmperature measurement |      |
+| 1   | 10k          | R-EU_0207/10    | 0207/10      | bodge                | RESISTOR,                   | to add voltage measurement |      |
+| 1   | 100          | R-EU_0207/10    | 0207/10      | bodge                | RESISTOR,                   | to add voltage measurement |      |
 | 1   | 78L05        | 78XXS           | 78XXS        | IC2                  | VOLTAGE REGULATOR           |                               |      |
 | 1   | POWER        | W237-02P        | W237-132     | X1                   | WAGO SREW CLAMP             | optional                      |      |
 | 1   | Solder       | W237-3E         | W237-3E      | X2                   | WAGO SREW CLAMP             | optional                      |      |
