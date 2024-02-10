@@ -27,7 +27,7 @@ AVR_FREQ   = F8000000
 # enter the parameters for the UISP isp tool
 # for an stk500 at com1
 ISPTOOL	   = stk500v2
-ISPPORT	   = com55
+ISPPORT	   = com4
 ISPSPEED   = -b 115200
 # or an stk200 at lpt1
 #ISPTOOL    = stk200
