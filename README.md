@@ -16,7 +16,10 @@ http://fpv-community.de/showthread.php?41335-DIY-SMD-L%F6tstation-Ersatz-f%FCr-%
 [board layout pdf hardware/eagle/rt_solder_simple_V1.2.brd.pdf](https://github.com/mlaiacker/soldering-station/blob/master/hardware/eagle/rt_solder_simple_V1.2.brd.pdf?raw=true)
 
 
-## Part list
+## Bill of Materials for PCB
+
+[BOM as pdf](hardware/eagle/rt_solder_simple_V1.2.BOM.pdf?raw=true)
+
 
 | Qty | Value        | Device          | Package      | Parts                | Description                 | Comment                       | Link |
 | --- | ------------ | --------------- | ------------ | -------------------- | --------------------------- | ----------------------------- | ---- |
