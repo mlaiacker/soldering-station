@@ -1,4 +1,9 @@
 # Soldering Station for Weller Soldering Tips
+
+![weller RT tips](doc/images/IMG_4286_soldering_tips.jpg)
+
+https://www.weller-tools.com/eu/de/industrielles-loeten/produkte/loetspitzen/rtm-013-s
+
 This project is based on the work of Martin Kumm.
 
 http://www.martin-kumm.de/wiki/doku.php?id=Projects:SMD_Solderstation
