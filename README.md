@@ -52,7 +52,7 @@ http://fpv-community.de/showthread.php?41335-DIY-SMD-L%F6tstation-Ersatz-f%FCr-%
 | 1   | 47k          | R-EU_0207/10    | 0207/10      | bodge                | RESISTOR,                   | to fix tmperature measurement |      |
 | 1   | 10M          | R-EU_0207/10    | 0207/10      | bodge                | RESISTOR,                   | to fix tmperature measurement |      |
 | 1   | 10k          | R-EU_0207/10    | 0207/10      | bodge                | RESISTOR,                   | to add voltage measurement |      |
-| 1   | 100          | R-EU_0207/10    | 0207/10      | bodge                | RESISTOR,                   | to add voltage measurement |      |
+| 1   | 100k         | R-EU_0207/10    | 0207/10      | bodge                | RESISTOR,                   | to add voltage measurement |      |
 | 1   | 78L05        | 78XXS           | 78XXS        | IC2                  | VOLTAGE REGULATOR           |                               |      |
 | 1   | POWER        | W237-02P        | W237-132     | X1                   | WAGO SREW CLAMP             | optional                      |      |
 | 1   | Solder       | W237-3E         | W237-3E      | X2                   | WAGO SREW CLAMP             | optional                      |      |
