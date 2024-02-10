@@ -9,29 +9,14 @@ http://mlaiacker.mooo.com/Elektronik/Soldering%20Station/
 
 http://fpv-community.de/showthread.php?41335-DIY-SMD-L%F6tstation-Ersatz-f%FCr-%28WELLER%29
 
-## Images
-PCB<br>
-![max solder pcb]( https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/IMG_4370.JPG) <br>
-With nice enclosure and LCD<br>
-![maxsolder anclosure](https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/img_20140730_225220.jpg) <br>
-You can also just use this scale to set the temperature instead of the LCD
-![maxsolder anclosure](https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/scale_solder.PNG) <br>
-Ask me for PCBs !! I had 10 made and some are available<br>
-![PCBs]( https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/IMG_4367.JPG) <br>
+## PCB layout
 
-## FAQ
+![Borad layout](https://github.com/mlaiacker/soldering-station/blob/master/doc/images/board_v12.png?raw=true)
 
-### Hast du noch Platinen? 
+[board layout pdf hardware/eagle/rt_solder_simple_V1.2.brd.pdf](https://github.com/mlaiacker/soldering-station/blob/master/hardware/eagle/rt_solder_simple_V1.2.brd.pdf?raw=true)
 
-ja noch: <br>
-10 (2.4.2016)<br>
-9 (5.4.2016)<br>
-Ich kann auch gleich programmierten atmega8 und OPA und LCD dazu legen
 
-### Was Kostet? 
-10
-
-## Stückliste
+## Part list
 
 | Qty | Value        | Device          | Package      | Parts                | Description                 | Comment                       | Link |
 | --- | ------------ | --------------- | ------------ | -------------------- | --------------------------- | ----------------------------- | ---- |
@@ -59,10 +44,29 @@ Ich kann auch gleich programmierten atmega8 und OPA und LCD dazu legen
 | 1   | POWER        | W237-02P        | W237-132     | X1                   | WAGO SREW CLAMP             | optional                      |      |
 | 1   | Solder       | W237-3E         | W237-3E      | X2                   | WAGO SREW CLAMP             | optional                      |      |
 
+## Images
+PCB<br>
+![max solder pcb]( https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/IMG_4370.JPG) <br>
+With nice enclosure and LCD<br>
+![maxsolder anclosure](https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/img_20140730_225220.jpg) <br>
+You can also just use this scale to set the temperature instead of the LCD
+![maxsolder anclosure](https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/scale_solder.PNG) <br>
+Ask me for PCBs !! I had 10 made and some are available<br>
+![PCBs]( https://raw.githubusercontent.com/mlaiacker/soldering-station/master/doc/images/IMG_4367.JPG) <br>
 
-![Borad layout](https://github.com/mlaiacker/soldering-station/blob/master/doc/images/board_v12.png?raw=true)
+## FAQ
 
-[board layout pdf hardware/eagle/rt_solder_simple_V1.2.brd.pdf](https://github.com/mlaiacker/soldering-station/blob/master/hardware/eagle/rt_solder_simple_V1.2.brd.pdf?raw=true)
+### Hast du noch Platinen? 
+
+ja noch: <br>
+10 (2.4.2016)<br>
+9 (5.4.2016)<br>
+Ich kann auch gleich programmierten atmega8 und OPA und LCD dazu legen
+
+### Was Kostet? 
+10
+
+
 ### hex bauen?
 Das erstellen der main.hex geht über das Makefile mit "make all" dazu musst du den gcc avr Compiler installiert haben siehe dazu :http://www.mikrocontroller.net/articles/AVR-GCC
 
