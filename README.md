@@ -48,6 +48,7 @@ http://fpv-community.de/showthread.php?41335-DIY-SMD-L%F6tstation-Ersatz-f%FCr-%
 | 1   | Solder       | W237-3E         | W237-3E      | X2                   | WAGO SREW CLAMP             | optional                      |      |
 
 ## Images
+
 PCB<br>
 ![max solder pcb](doc/images/IMG_4370.JPG) <br>
 With nice enclosure and LCD<br>
@@ -69,15 +70,30 @@ Ich kann auch gleich programmierten atmega8 und OPA und LCD dazu legen
 ### Was Kostet? 
 10
 
-
 ### hex bauen?
+
+```
+make all
+```
+
 Das erstellen der main.hex geht über das Makefile mit "make all" dazu musst du den gcc avr Compiler installiert haben siehe dazu :http://www.mikrocontroller.net/articles/AVR-GCC
 
 ### flashen?
+
+[for atmega 168](software/avr/main_atmega168.hex)
+
+[for atmega 8](software/avr/main_atmega8.hex)
+
+```
+make program
+```
+
 Mit "make program" wird dann avrdude aufgerufen um über die serielle Schnittstelle ein neues Programm zu laden.
 Dazu musst du wahrscheinlich den Port (com1) ändern im Makefile
 
+```
 AVRDUDE_PORT = com1 -b 38400 # programmer connected to serial device
+```
 
 Computer per TTL Seriell mit der Platine verbinden einen jumper auf die "Boot" pins stecken und einschalten dann wird der Bootloader aktiviert.
 
