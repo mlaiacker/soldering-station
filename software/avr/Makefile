@@ -31,8 +31,9 @@
 
 
 # MCU name
-MCU = atmega8
-AVRDUDE_PORT = com4 -b 38400  # programmer connected to serial device
+MCU = atmega168
+//AVRDUDE_PORT = com8 -b 38400  # programmer connected to serial device
+AVRDUDE_PORT = com8 -b 115200  # programmer connected to serial device
 #AVRDUDE_PROGRAMMER = stk500v1
 AVRDUDE_PROGRAMMER = stk500v2
 

@@ -156,7 +156,7 @@ void init(void){
 	sei(); // interupt enable
 
 	//TASTE_M_INIT;
-	wdt_enable(WDTO_500MS);
+	wdt_enable(WDTO_1S);
 
 	eeprom_read_block(&param,&param_ee,sizeof(param));
 	wdt_reset();

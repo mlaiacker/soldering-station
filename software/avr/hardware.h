@@ -9,7 +9,7 @@
 
 #ifndef F_CPU
 	#if defined (__AVR_ATmega168__)
-		#define F_CPU        16000000L              		// 20MHz processor
+		#define F_CPU        8000000L              		// 8MHz processor
 	#elif defined (__AVR_ATmega8__)
 		#define F_CPU        8000000L               		// 16MHz processor
 	#endif

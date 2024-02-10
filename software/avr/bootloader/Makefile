@@ -8,8 +8,8 @@ BUILD      = 120515
 PROGRAM    = max-boot
 
 # enter the product name for which you want to build the bootloader/monitor
-PRODUCT    = MEGA8
-#PRODUCT    = MEGA168
+#PRODUCT    = MEGA8
+PRODUCT    = MEGA168
 #PRODUCT    = CRUMB8
 #PRODUCT    = CRUMB128
 #PRODUCT    = CRUMB168
@@ -27,7 +27,7 @@ AVR_FREQ   = F8000000
 # enter the parameters for the UISP isp tool
 # for an stk500 at com1
 ISPTOOL	   = stk500v2
-ISPPORT	   = com4
+ISPPORT	   = com8
 ISPSPEED   = -b 115200
 # or an stk200 at lpt1
 #ISPTOOL    = stk200
@@ -51,7 +51,7 @@ ifeq ($(PRODUCT),MEGA168)
 MCU_TARGET = atmega168
 LDSECTION  = --section-start=.text=0x3800
 #ISPFUSES    = avrdude -c $(ISPTOOL) -p m168 -P $(ISPPORT) $(ISPSPEED) -u -U efuse:r:-:h -U hfuse:r:-:h -U lfuse:r:-:h
-#ISPFUSES    = avrdude -c $(ISPTOOL) -p m168 -P $(ISPPORT) $(ISPSPEED) -u -U efuse:w:0x00:m -U hfuse:w:0xd4:m -U lfuse:w:0xd7:m
+ISPFUSES    = avrdude -c $(ISPTOOL) -p m168 -P $(ISPPORT) $(ISPSPEED) -U lfuse:w:0xe2:m -U hfuse:w:0xd5:m -U efuse:w:0xf8:m
 ISPFLASH    = avrdude -c $(ISPTOOL) -p m168 -P $(ISPPORT) $(ISPSPEED) -U flash:w:$(PROGRAM)_$(PRODUCT)_$(AVR_FREQ)_$(BUILD).hex
 endif
 
