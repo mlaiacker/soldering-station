@@ -42,7 +42,7 @@
 #define SOLDER_TIMEOUT_PWM_DIFF		20	// max pwm deviation around 10 second mean
 #define SOLDER_TIMEOUT_TEMP_ERROR	50	// max temp deviation around setpoint in deg/10
 // max heating power
-#define SOLDER_MAX_PWM	(PWM_MAX_1A*2/3)
+#define SOLDER_MAX_PWM	(PWM_MAX_1A*2L/3L)
 
 #define MENU_DISPLAY_INT	50 //ms
 #define INT_CONTROL			16 //ms
@@ -75,10 +75,9 @@ struct {
 	uint16_t    vinCount;
 } solder;
 
-// not used yet !!
 typedef struct
 {
-	unsigned char pwm_max; // in prozent 10..99
+	unsigned short pwm_max; // in prozent 10..99
 	unsigned char poti_offset; // in adc ticks 0..1023
 	unsigned char lcd_mode; // 0 = disable 1 = 1x20 2=2x16
 	unsigned char control_freq; // temperature measurment freq 4..50
@@ -87,21 +86,27 @@ typedef struct
 	unsigned short standby_timeout; // in seconds 0..6000 10<disable
 	unsigned short standby_temp; // in deg c 1..temp_high
 	unsigned short standby_fact; // in fact from 0..10 0=disable 5 = normal 10=big changes will reset standby counter
-	short control_p; // control p gain 1..1000
-	short control_i; // control i gain 0..100
-	short control_d; // control d gain -1000..1000
+	short control_p; // control p gain 1..100
+	short control_i; // control i gain 0..10
+	short temp_sens_offset; // -100..100
+	short temp_sens_gain; // 3000..6000
 	unsigned int checksum; //sum off all values  + 0xabcdef
 } solder_param_t;
 
 solder_param_t param;
 solder_param_t param_ee EEPROM;
 
-void uartOutput(void);
 unsigned int paramChecksum(solder_param_t *param);
+void paramSave(void);
+void paramLoad(void);
+
+void uartOutputHeader(void);
+void uartOutput(void);
+
 
 //-------------Initalisierung------------------
 // da die init fuktionen sowiso nur ein mal im programm aufgerufen werden stehen sie hier "inline"
-// ist zwar nicht so übersichtlich spart aber mindestens 4 byte pro init funktion
+// ist zwar nicht so ï¿½bersichtlich spart aber mindestens 4 byte pro init funktion
 void init(void){
 	#ifdef BEEP_ON
 	BEEP_INIT;
@@ -125,7 +130,7 @@ void init(void){
 	#endif
 
 	#endif
-// timer0 für Zeitmessung
+// timer0 fï¿½r Zeitmessung
 	Time=0;
 	// Counter Register
 	TCNT0=RTC_START_VAL;
@@ -158,26 +163,26 @@ void init(void){
 	//TASTE_M_INIT;
 	wdt_enable(WDTO_1S);
 
-	eeprom_read_block(&param,&param_ee,sizeof(param));
 	wdt_reset();
+	paramLoad();
 	if(param.checksum != paramChecksum(&param))
 	{
 	 // defaults
 		usartPrint("loading default params...\r\n");
 		param.control_p = GAIN_KP;
 		param.control_i = GAIN_KI;
-		param.control_d = 0;
 		param.control_freq = 10;
-		param.poti_offset = 10;
+		param.poti_offset = POTI_OFF;
 		param.lcd_mode = 1;
-		param.pwm_max = 75;
+		param.pwm_max = SOLDER_MAX_PWM;
 		param.standby_fact = 5;
 		param.standby_temp = 200;
 		param.standby_timeout = 600;
-		param.temp_high = 400;
-		param.temp_low = 200;
-		param.checksum = paramChecksum(&param);
-		eeprom_write_block(&param, &param_ee, sizeof(param));
+		param.temp_high = POTI_TEMP_END;
+		param.temp_low = POTI_TEMP_START;
+		param.temp_sens_gain = TEMP_GAIN;
+		param.temp_sens_offset = TEMP_OFFSET;
+		paramSave();
 	}
 	solder.vinConnected = 1;
 	wdt_reset();
@@ -213,10 +218,20 @@ void init(void){
 	rtcDelay(300);
 	wdt_reset();
 #endif
-
+	uartOutputHeader();
 }// init end
 
 /*---------------- Functions -------------------------*/
+void paramSave(void)
+{
+		param.checksum = paramChecksum(&param);
+		eeprom_write_block(&param, &param_ee, sizeof(param));
+}
+
+void paramLoad(void)
+{
+	eeprom_read_block(&param,&param_ee,sizeof(param));
+}
 
 unsigned int paramChecksum(solder_param_t *param)
 {
@@ -230,31 +245,94 @@ unsigned int paramChecksum(solder_param_t *param)
 
 #ifdef UART
 
+void uartOutputHeader(void)
+{
+	usartPrint("\r\ntemp temp_desired pwm timeout Vin\r\n");
+}
 
 void uartOutput(void)
 {
-	//usart_puts_prog(modeName[charger.mode]);
-	//usartNum(Time/100,5,1); // Ladezeit
 	usartNum(solder.temp,4,1); // Temp
 	usartNum(solder.temp_des,4,1); // Ausgangsstrom
 	usartNum(solder.pwm,3,0);
 	usartNum(solder.Toff,4,0);
 	usartNum(solder.vin_dV,3,1);
-//	usartNum(solder.i,4,0);
 	usartPutc('\r');
 	usartPutc('\n');
 }
 
+int paramEdit(int param, int step , int min, int max, char key){
+	if(key=='+'){
+		param += step;
+	}
+	if(key=='-'){
+		param -= step;
+	}
+	param = MAX(min, param);
+	param = MIN(max, param);
+	return param;
+}
+
 void uartMenu(char key)
 {
-	usartPrint("Solder Menu:\r\n");
-	usartPrint("## CONTROL ##\r\n");
-	usartPrint("P=");usartNum(param.control_p,3,0);
-	usartPrint("\r\nI=");usartNum(param.control_i,3,0);
-	usartPrint("\r\nD=");usartNum(param.control_d,3,0);
-	usartPrint("\r\ninterval=");usartNum(param.control_freq,3,0);
-	usartPrint("\r\nexit:q\r\n");
-	if(key=='q') maindata.menu_on = 0;
+	if(maindata.menu_item == 0)
+	{
+		if(key>='1' && key<='9')
+		{
+			maindata.menu_item = key - '0';
+		} else {
+			usartPrint("Solder Menu:\r\n");
+			usartPrint("## PARAMTER ## (select 1-9 and then +- to edit)");
+			usartPrint("\r\n1 P=");usartNum(param.control_p,3,0);
+			usartPrint("\r\n2 I=");usartNum(param.control_i,3,0);
+			//usartPrint("\r\n4 interval=");usartNum(param.control_freq,3,0);
+			usartPrint("\r\n5 sens gain=");usartNum(param.temp_sens_gain,5,0);
+			usartPrint("\r\n6 sens offset=");usartNum(param.temp_sens_offset,4,0);
+			usartPrint("\r\nsave:s");
+			usartPrint("\r\nload:l");
+			usartPrint("\r\nexit:q\r\n");
+		}
+	} 
+	{
+		switch (maindata.menu_item)
+		{
+		case 1:
+			param.control_p = paramEdit(param.control_p, 1, 1, 200, key);
+			usartPrint("\r\n1 P=");usartNum(param.control_p,3,0);
+			break;
+
+		case 2:
+			param.control_i = paramEdit(param.control_i, 1, 0, 20, key);
+			usartPrint("\r\n2 I=");usartNum(param.control_i,3,0);
+			break;
+		case 5:
+			param.temp_sens_gain = paramEdit(param.temp_sens_gain, 10, 3000, 6000, key);
+			usartPrint("\r\n5 sens gain=");usartNum(param.temp_sens_gain,5,0);
+			break;
+		case 6:
+			param.temp_sens_offset = paramEdit(param.temp_sens_offset, 2, -100, 100, key);
+			usartPrint("\r\n6 sens offset=");usartNum(param.temp_sens_offset,4,0);
+			break;
+		
+		default:
+			break;
+		}
+	}
+	if(key=='q'){
+		maindata.menu_on = 0;
+		uartOutputHeader();
+		maindata.menu_item = 0;
+	} 
+	if(key=='s'){
+		paramSave();
+		maindata.menu_on = 0;
+		uartOutputHeader();
+		maindata.menu_item = 0;
+	} 
+	if(key=='l'){
+		paramLoad();
+		maindata.menu_item = 0;
+	} 
 }
 
 #endif
@@ -314,7 +392,7 @@ int main(void)
 			} else if (solder.state==4)
 			{
 				// Temperatur messen und Heizung immer noch aus.
-				solder.temp =  ((a2dConvert10bit(ADC_CH_TEMP)*TEMP_GAIN/(ADC_MAX*1L) + TEMP_OFFSET) + solder.temp)/2;
+				solder.temp =  ((a2dConvert10bit(ADC_CH_TEMP)*((long)param.temp_sens_gain)/(ADC_MAX*1L) + param.temp_sens_offset) + solder.temp)/2;
 				if(solder.temp>SOLDER_MAX)
 				{
 					solder.state = 1;
@@ -322,7 +400,7 @@ int main(void)
 			} else if (solder.state==5)
 			{
 				// Temperatur noch mal messen und Ergebnisse mitteln
-				solder.temp =  ((a2dConvert10bit(ADC_CH_TEMP)*TEMP_GAIN/(ADC_MAX*1L) + TEMP_OFFSET) + solder.temp)/2;
+				solder.temp =  ((a2dConvert10bit(ADC_CH_TEMP)*((long)param.temp_sens_gain)/(ADC_MAX*1L) + param.temp_sens_offset) + solder.temp)/2;
 				if(solder.temp>SOLDER_MAX)
 				{
 					solder.state = 1;
@@ -365,10 +443,10 @@ int main(void)
 			solder.vinCount++;
 			if(solder.poti<POTI_OFF)
 			{
-				// Lötstation ist an aber Heizung ist aus
+				// Lï¿½tstation ist an aber Heizung ist aus
 				solder.on = 0;
 				solder.temp_des = 0;
-				solder.error = 0; // fehler zurücksetzen wenn poti auf 0
+				solder.error = 0; // fehler zurï¿½cksetzen wenn poti auf 0
 				solder.standby = 0;
 			} else
 			{
@@ -462,18 +540,18 @@ int main(void)
 				{
 					solder.pwm_mean = (solder.pwm_mean*9 + solder.pwm)/10;
 					/* Standby Bedingungen:
-					 * 1: abs(solder.poti - solder.poti_old)<10 Soll Temperatur Einstellung ändert sich nicht.
-					 * 2: (solder.pwm < solder.temp_des/65)  Der PWM wert zum heizen ist klein (wenn man den Lötkolben benutzt muss ja stärker geheizt werden als wenn er nur rum liegt)
+					 * 1: abs(solder.poti - solder.poti_old)<10 Soll Temperatur Einstellung ï¿½ndert sich nicht.
+					 * 2: (solder.pwm < solder.temp_des/65)  Der PWM wert zum heizen ist klein (wenn man den Lï¿½tkolben benutzt muss ja stï¿½rker geheizt werden als wenn er nur rum liegt)
 					 * 3: (solder.error_signal < 50) Die ist Temperatur ist maximal 5 Grad C kleiner als die soll Temperatur.
 					 */
 //					char standby = (solder.pwm < solder.temp_des/65) && (solder.error_signal < 50) && (abs(solder.poti - solder.poti_old)<10);
 					char standby = (abs(solder.pwm - solder.pwm_mean)<SOLDER_TIMEOUT_PWM_DIFF || solder.pwm<=1) && (solder.error_signal <= SOLDER_TIMEOUT_TEMP_ERROR) && (abs(solder.poti - solder.poti_old)<=11);
-					// standby bedingung muss immer erfüllt sein
+					// standby bedingung muss immer erfï¿½llt sein
 					solder.standby = einschaltverz(standby,	SOLDER_TIMEOUT, &solder.Tstandby);
-					// heizung komplett abgestellt wenn man den Lötkolben vergisst abzuschalten.
+					// heizung komplett abgestellt wenn man den Lï¿½tkolben vergisst abzuschalten.
 					if(einschaltverz(standby,SOLDER_TIMEOUT_OFF, &solder.Toff)) solder.on = 0;
 				}
-				solder.poti_old = solder.poti; // Poti Stellung merken für standby timeout
+				solder.poti_old = solder.poti; // Poti Stellung merken fï¿½r standby timeout
 			} else {
 				solder.Tstandby = 0;
 			}

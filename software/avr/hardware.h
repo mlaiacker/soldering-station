@@ -22,14 +22,11 @@
 #define ADC_CH_VBAT		2
 
 
-// Refferenzspannung 2.500V
 #define ADC_U_REF	500L // in mv/10
 #define ADC_MAX		(1024L)
 
-// umrechnung von adc werten (10bit) in temeratur in °C
-#define BITS2TEMP(x) ((x)*(x)/1864L + (x)*100/-282 + 83L) // aus messwerten ermittelt und dann mit matlab(basic fitting) ausgerechnet
-
 #define ADC_PRESCALE			ADC_PRESCALE_DIV128
+// Refferenzspannung 5.0V
 #define ADC_REFERENCE			ADC_REFERENCE_AVCC
 
 #define A2D_SCAN_CHANNELS	(2)
@@ -90,7 +87,7 @@
 #define TASTE_M	(bit_is_clear(TASTE_M_PIN,TASTE_M_BIT))
 #define TASTE_R	(bit_is_clear(TASTE_R_PIN,TASTE_R_BIT))
 
-// tasten sind an einzelnen eingängen
+// tasten sind an einzelnen eingï¿½ngen
 
 #define TASTE_M_PORT	PORTD
 #define TASTE_M_PIN		PIND
@@ -99,10 +96,10 @@
 
 
 /* ### uart ### */
-#define UART // wir machen Ausgaben über die serielle Schnittstelle
+#define UART // wir machen Ausgaben ï¿½ber die serielle Schnittstelle
 #if defined (__AVR_ATmega168__)
-
-	#define UART_BAUD_RATE	9600
+// same as bootloader so reset over serial port works
+	#define UART_BAUD_RATE	38400L
 //	#define UART_BAUD_RATE	115200
 // Baudrate
 #elif defined (__AVR_ATmega8__)

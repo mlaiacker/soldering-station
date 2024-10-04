@@ -15663,7 +15663,7 @@ by R. Vogg  15.March.2002</description>
 <wire x1="187.96" y1="7.62" x2="193.04" y2="7.62" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$9" class="0">
+<net name="ADC1_TEMP_SENS" class="0">
 <segment>
 <pinref part="R7" gate="G$1" pin="1"/>
 <pinref part="C7" gate="G$1" pin="1"/>
@@ -15675,6 +15675,7 @@ by R. Vogg  15.March.2002</description>
 <wire x1="144.78" y1="27.94" x2="144.78" y2="86.36" width="0.1524" layer="91"/>
 <pinref part="IC1" gate="G$1" pin="PC1(ADC1)"/>
 <wire x1="144.78" y1="86.36" x2="116.84" y2="86.36" width="0.1524" layer="91"/>
+<label x="119.38" y="86.36" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$12" class="0">
@@ -15684,7 +15685,7 @@ by R. Vogg  15.March.2002</description>
 <wire x1="109.22" y1="114.3" x2="111.76" y2="114.3" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$13" class="0">
+<net name="ADC0_POT" class="0">
 <segment>
 <pinref part="R8" gate="G$1" pin="2"/>
 <pinref part="C8" gate="G$1" pin="1"/>
@@ -15695,15 +15696,16 @@ by R. Vogg  15.March.2002</description>
 <pinref part="IC1" gate="G$1" pin="PC0(ADC0)"/>
 <wire x1="116.84" y1="88.9" x2="142.24" y2="88.9" width="0.1524" layer="91"/>
 <junction x="142.24" y="88.9"/>
+<label x="119.38" y="88.9" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$16" class="0">
 <segment>
 <wire x1="38.1" y1="76.2" x2="38.1" y2="71.12" width="0.1524" layer="91"/>
-<wire x1="38.1" y1="71.12" x2="66.04" y2="71.12" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="71.12" x2="66.04" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="71.12" x2="63.5" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="71.12" x2="63.5" y2="78.74" width="0.1524" layer="91"/>
 <pinref part="IC1" gate="G$1" pin="AVCC"/>
-<wire x1="66.04" y1="78.74" x2="68.58" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="78.74" x2="68.58" y2="78.74" width="0.1524" layer="91"/>
 <pinref part="C11" gate="G$1" pin="1"/>
 <junction x="38.1" y="71.12"/>
 <pinref part="L1" gate="G$1" pin="2"/>
@@ -15843,6 +15845,36 @@ by R. Vogg  15.March.2002</description>
 <wire x1="129.54" y1="-5.08" x2="129.54" y2="55.88" width="0.1524" layer="91"/>
 <pinref part="IC1" gate="G$1" pin="PD4(XCK/T0)"/>
 <wire x1="129.54" y1="55.88" x2="116.84" y2="55.88" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="ADC2_BATT" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="PC2(ADC2)"/>
+<wire x1="116.84" y1="83.82" x2="129.54" y2="83.82" width="0.1524" layer="91"/>
+<label x="119.38" y="83.82" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="RESET" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="PC6(/RESET)"/>
+<wire x1="68.58" y1="88.9" x2="53.34" y2="88.9" width="0.1524" layer="91"/>
+<label x="55.88" y="88.9" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="XTAL1" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="PB6(XTAL1/TOSC1)"/>
+<wire x1="68.58" y1="71.12" x2="66.04" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="71.12" x2="66.04" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="68.58" x2="55.88" y2="68.58" width="0.1524" layer="91"/>
+<label x="55.88" y="68.58" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="XTAL2" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="PB7(XTAL2/TOSC2)"/>
+<wire x1="68.58" y1="66.04" x2="55.88" y2="66.04" width="0.1524" layer="91"/>
+<label x="55.88" y="66.04" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
