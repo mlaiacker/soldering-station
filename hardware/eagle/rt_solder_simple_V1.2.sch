@@ -15823,6 +15823,7 @@ by R. Vogg  15.March.2002</description>
 <pinref part="JP2" gate="A" pin="2"/>
 <wire x1="66.04" y1="0" x2="60.96" y2="0" width="0.1524" layer="91"/>
 <junction x="66.04" y="0"/>
+<label x="71.12" y="0" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="LCD_RS" class="0">

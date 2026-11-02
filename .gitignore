@@ -88,3 +88,9 @@ software/avr/bootloader/max-boot.srec
 software/avr/bootloader/max-boot.elf
 doc.docx
 software/avr/make_main.cmd
+*.s#*
+*.b#*
+Sicherung*
+software/avr/.vs/
+~$*
+.~lock.doc.docx#
