@@ -32,10 +32,10 @@
 
 # MCU name
 MCU = atmega168
-AVRDUDE_PORT = com9 -b 38400  # programmer connected to serial device
-#AVRDUDE_PORT = com8 -b 115200  # programmer connected to serial device
-AVRDUDE_PROGRAMMER = stk500v1
-#AVRDUDE_PROGRAMMER = stk500v2
+#AVRDUDE_PORT = com11 -b 38400  # programmer connected to serial device
+AVRDUDE_PORT = com11 -b 115200  # programmer connected to serial device
+#AVRDUDE_PROGRAMMER = stk500v1
+AVRDUDE_PROGRAMMER = stk500v2
 
 F_CPU= 8000000
 # Output format. (can be srec, ihex, binary)

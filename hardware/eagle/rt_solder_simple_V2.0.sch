@@ -17092,25 +17092,25 @@ Source: www.kingbright.com</description>
 </deviceset>
 </devicesets>
 </library>
-<library name="display-lcd" urn="urn:adsk.eagle:library:214">
+<library name="display-lcd">
 <description>&lt;b&gt;Hitachi, Data Modul, Tuxgraphics - LCD Displays&lt;/b&gt;&lt;p&gt;
 &lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
 <packages>
-<package name="TUXGR_16X2_R2" urn="urn:adsk.eagle:footprint:13120/1" library_version="2">
+<package name="TUXGR_16X2_R2" urn="urn:adsk.eagle:footprint:13120/1" locally_modified="yes">
 <description>&lt;b&gt;Tuxgraphics LCD display 16x2 characters&lt;/b&gt; reflective, without background light&lt;p&gt;
 Source: tuxgr_12x2_r2.pdf</description>
 <wire x1="-39.9" y1="17.9" x2="39.9" y2="17.9" width="0.2032" layer="21"/>
 <wire x1="39.9" y1="17.9" x2="39.9" y2="-17.9" width="0.2032" layer="21"/>
 <wire x1="39.9" y1="-17.9" x2="-39.9" y2="-17.9" width="0.2032" layer="21"/>
 <wire x1="-39.9" y1="-17.9" x2="-39.9" y2="17.9" width="0.2032" layer="21"/>
-<wire x1="-36.75" y1="12" x2="36.75" y2="12" width="0.2032" layer="21"/>
-<wire x1="36.75" y1="12" x2="36.75" y2="-12.6" width="0.2032" layer="21"/>
-<wire x1="36.75" y1="-12.6" x2="-36.75" y2="-12.6" width="0.2032" layer="21"/>
-<wire x1="-36.75" y1="-12.6" x2="-36.75" y2="12" width="0.2032" layer="21"/>
-<wire x1="-32.15" y1="6.5" x2="32.15" y2="6.5" width="0.2032" layer="21"/>
-<wire x1="32.15" y1="6.5" x2="32.15" y2="-7.1" width="0.2032" layer="21"/>
-<wire x1="32.15" y1="-7.1" x2="-32.15" y2="-7.1" width="0.2032" layer="21"/>
-<wire x1="-32.15" y1="-7.1" x2="-32.15" y2="6.5" width="0.2032" layer="21"/>
+<wire x1="-36.75" y1="12" x2="36.75" y2="12" width="0.2032" layer="51"/>
+<wire x1="36.75" y1="12" x2="36.75" y2="-12.6" width="0.2032" layer="51"/>
+<wire x1="36.75" y1="-12.6" x2="-36.75" y2="-12.6" width="0.2032" layer="51"/>
+<wire x1="-36.75" y1="-12.6" x2="-36.75" y2="12" width="0.2032" layer="51"/>
+<wire x1="-32.15" y1="6.5" x2="32.15" y2="6.5" width="0.2032" layer="51"/>
+<wire x1="32.15" y1="6.5" x2="32.15" y2="-7.1" width="0.2032" layer="51"/>
+<wire x1="32.15" y1="-7.1" x2="-32.15" y2="-7.1" width="0.2032" layer="51"/>
+<wire x1="-32.15" y1="-7.1" x2="-32.15" y2="6.5" width="0.2032" layer="51"/>
 <pad name="1" x="-32" y="15.5" drill="1" diameter="1.6764"/>
 <pad name="2" x="-29.46" y="15.5" drill="1" diameter="1.6764"/>
 <pad name="3" x="-26.92" y="15.5" drill="1" diameter="1.6764"/>
@@ -17129,38 +17129,38 @@ Source: tuxgr_12x2_r2.pdf</description>
 <pad name="16" x="6.1" y="15.5" drill="1" diameter="1.6764"/>
 <text x="-38.1" y="18.415" size="1.27" layer="25">&gt;NAME</text>
 <text x="0.635" y="18.415" size="1.27" layer="27">&gt;VALUE</text>
-<rectangle x1="-28.85" y1="0.1" x2="-25.9" y2="4.45" layer="21"/>
-<rectangle x1="-28.85" y1="-5.05" x2="-25.9" y2="-0.7" layer="21"/>
-<rectangle x1="-25.2" y1="0.1" x2="-22.25" y2="4.45" layer="21"/>
-<rectangle x1="-25.2" y1="-5.05" x2="-22.25" y2="-0.7" layer="21"/>
-<rectangle x1="-21.55" y1="0.1" x2="-18.6" y2="4.45" layer="21"/>
-<rectangle x1="-21.55" y1="-5.05" x2="-18.6" y2="-0.7" layer="21"/>
-<rectangle x1="-17.9" y1="0.1" x2="-14.95" y2="4.45" layer="21"/>
-<rectangle x1="-17.9" y1="-5.05" x2="-14.95" y2="-0.7" layer="21"/>
-<rectangle x1="-14.25" y1="0.1" x2="-11.3" y2="4.45" layer="21"/>
-<rectangle x1="-14.25" y1="-5.05" x2="-11.3" y2="-0.7" layer="21"/>
-<rectangle x1="-10.6" y1="0.1" x2="-7.65" y2="4.45" layer="21"/>
-<rectangle x1="-10.6" y1="-5.05" x2="-7.65" y2="-0.7" layer="21"/>
-<rectangle x1="-6.95" y1="0.1" x2="-4" y2="4.45" layer="21"/>
-<rectangle x1="-6.95" y1="-5.05" x2="-4" y2="-0.7" layer="21"/>
-<rectangle x1="-3.3" y1="0.1" x2="-0.35" y2="4.45" layer="21"/>
-<rectangle x1="-3.3" y1="-5.05" x2="-0.35" y2="-0.7" layer="21"/>
-<rectangle x1="0.35" y1="0.1" x2="3.3" y2="4.45" layer="21"/>
-<rectangle x1="0.35" y1="-5.05" x2="3.3" y2="-0.7" layer="21"/>
-<rectangle x1="4" y1="0.1" x2="6.95" y2="4.45" layer="21"/>
-<rectangle x1="4" y1="-5.05" x2="6.95" y2="-0.7" layer="21"/>
-<rectangle x1="7.65" y1="0.1" x2="10.6" y2="4.45" layer="21"/>
-<rectangle x1="7.65" y1="-5.05" x2="10.6" y2="-0.7" layer="21"/>
-<rectangle x1="11.3" y1="0.1" x2="14.25" y2="4.45" layer="21"/>
-<rectangle x1="11.3" y1="-5.05" x2="14.25" y2="-0.7" layer="21"/>
-<rectangle x1="14.95" y1="0.1" x2="17.9" y2="4.45" layer="21"/>
-<rectangle x1="14.95" y1="-5.05" x2="17.9" y2="-0.7" layer="21"/>
-<rectangle x1="18.6" y1="0.1" x2="21.55" y2="4.45" layer="21"/>
-<rectangle x1="18.6" y1="-5.05" x2="21.55" y2="-0.7" layer="21"/>
-<rectangle x1="22.25" y1="0.1" x2="25.2" y2="4.45" layer="21"/>
-<rectangle x1="22.25" y1="-5.05" x2="25.2" y2="-0.7" layer="21"/>
-<rectangle x1="25.9" y1="0.1" x2="28.85" y2="4.45" layer="21"/>
-<rectangle x1="25.9" y1="-5.05" x2="28.85" y2="-0.7" layer="21"/>
+<rectangle x1="-28.85" y1="0.1" x2="-25.9" y2="4.45" layer="51"/>
+<rectangle x1="-28.85" y1="-5.05" x2="-25.9" y2="-0.7" layer="51"/>
+<rectangle x1="-25.2" y1="0.1" x2="-22.25" y2="4.45" layer="51"/>
+<rectangle x1="-25.2" y1="-5.05" x2="-22.25" y2="-0.7" layer="51"/>
+<rectangle x1="-21.55" y1="0.1" x2="-18.6" y2="4.45" layer="51"/>
+<rectangle x1="-21.55" y1="-5.05" x2="-18.6" y2="-0.7" layer="51"/>
+<rectangle x1="-17.9" y1="0.1" x2="-14.95" y2="4.45" layer="51"/>
+<rectangle x1="-17.9" y1="-5.05" x2="-14.95" y2="-0.7" layer="51"/>
+<rectangle x1="-14.25" y1="0.1" x2="-11.3" y2="4.45" layer="51"/>
+<rectangle x1="-14.25" y1="-5.05" x2="-11.3" y2="-0.7" layer="51"/>
+<rectangle x1="-10.6" y1="0.1" x2="-7.65" y2="4.45" layer="51"/>
+<rectangle x1="-10.6" y1="-5.05" x2="-7.65" y2="-0.7" layer="51"/>
+<rectangle x1="-6.95" y1="0.1" x2="-4" y2="4.45" layer="51"/>
+<rectangle x1="-6.95" y1="-5.05" x2="-4" y2="-0.7" layer="51"/>
+<rectangle x1="-3.3" y1="0.1" x2="-0.35" y2="4.45" layer="51"/>
+<rectangle x1="-3.3" y1="-5.05" x2="-0.35" y2="-0.7" layer="51"/>
+<rectangle x1="0.35" y1="0.1" x2="3.3" y2="4.45" layer="51"/>
+<rectangle x1="0.35" y1="-5.05" x2="3.3" y2="-0.7" layer="51"/>
+<rectangle x1="4" y1="0.1" x2="6.95" y2="4.45" layer="51"/>
+<rectangle x1="4" y1="-5.05" x2="6.95" y2="-0.7" layer="51"/>
+<rectangle x1="7.65" y1="0.1" x2="10.6" y2="4.45" layer="51"/>
+<rectangle x1="7.65" y1="-5.05" x2="10.6" y2="-0.7" layer="51"/>
+<rectangle x1="11.3" y1="0.1" x2="14.25" y2="4.45" layer="51"/>
+<rectangle x1="11.3" y1="-5.05" x2="14.25" y2="-0.7" layer="51"/>
+<rectangle x1="14.95" y1="0.1" x2="17.9" y2="4.45" layer="51"/>
+<rectangle x1="14.95" y1="-5.05" x2="17.9" y2="-0.7" layer="51"/>
+<rectangle x1="18.6" y1="0.1" x2="21.55" y2="4.45" layer="51"/>
+<rectangle x1="18.6" y1="-5.05" x2="21.55" y2="-0.7" layer="51"/>
+<rectangle x1="22.25" y1="0.1" x2="25.2" y2="4.45" layer="51"/>
+<rectangle x1="22.25" y1="-5.05" x2="25.2" y2="-0.7" layer="51"/>
+<rectangle x1="25.9" y1="0.1" x2="28.85" y2="4.45" layer="51"/>
+<rectangle x1="25.9" y1="-5.05" x2="28.85" y2="-0.7" layer="51"/>
 <hole x="-37.5" y="-15.5" drill="2.5"/>
 <hole x="37.5" y="-15.5" drill="2.5"/>
 <hole x="-37.5" y="15.5" drill="2.5"/>
@@ -17168,7 +17168,7 @@ Source: tuxgr_12x2_r2.pdf</description>
 </package>
 </packages>
 <packages3d>
-<package3d name="TUXGR_16X2_R2" urn="urn:adsk.eagle:package:13139/1" type="box" library_version="2">
+<package3d name="TUXGR_16X2_R2" urn="urn:adsk.eagle:package:13139/1" type="box">
 <description>Tuxgraphics LCD display 16x2 characters reflective, without background light
 Source: tuxgr_12x2_r2.pdf</description>
 <packageinstances>
@@ -17177,7 +17177,7 @@ Source: tuxgr_12x2_r2.pdf</description>
 </package3d>
 </packages3d>
 <symbols>
-<symbol name="TUXGR_16X2_R2" urn="urn:adsk.eagle:symbol:13119/1" library_version="2">
+<symbol name="TUXGR_16X2_R2">
 <wire x1="-20.32" y1="-7.62" x2="22.86" y2="-7.62" width="0.2032" layer="94"/>
 <wire x1="22.86" y1="-7.62" x2="22.86" y2="12.7" width="0.2032" layer="94"/>
 <wire x1="22.86" y1="12.7" x2="-20.32" y2="12.7" width="0.2032" layer="94"/>
@@ -17236,7 +17236,7 @@ Source: tuxgr_12x2_r2.pdf</description>
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="TUXGR_16X2_R2" urn="urn:adsk.eagle:component:13152/2" prefix="DIS" library_version="2">
+<deviceset name="TUXGR_16X2_R2" prefix="DIS">
 <description>&lt;b&gt;Tuxgraphics LCD display 16x2 characters&lt;/b&gt; reflective, without background light&lt;p&gt;
 Source: tuxgr_12x2_r2.pdf</description>
 <gates>
@@ -18037,7 +18037,7 @@ Source: &lt;a href="https://www.piher.net/pdf/15-PTC15v03.pdf"&gt; Datasheet &lt
 </class>
 </classes>
 <parts>
-<part name="IC1" library="atmel" deviceset="MEGA8-P" device=""/>
+<part name="IC1" library="atmel" deviceset="MEGA8-P" device="" value="MEGA168-P"/>
 <part name="IC2" library="v-reg" deviceset="78XXS" device="" value="78L05"/>
 <part name="GND1" library="supply1" deviceset="GND" device=""/>
 <part name="P+1" library="supply1" deviceset="+12V" device=""/>
@@ -18099,7 +18099,7 @@ Source: &lt;a href="https://www.piher.net/pdf/15-PTC15v03.pdf"&gt; Datasheet &lt
 <part name="LED1" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:15799/2"/>
 <part name="P+12" library="supply1" deviceset="+5V" device=""/>
 <part name="R11" library="rcl" deviceset="R-EU_" device="0207/10" value="1k"/>
-<part name="DIS1" library="display-lcd" library_urn="urn:adsk.eagle:library:214" deviceset="TUXGR_16X2_R2" device="" package3d_urn="urn:adsk.eagle:package:13139/1"/>
+<part name="DIS1" library="display-lcd" deviceset="TUXGR_16X2_R2" device="" package3d_urn="urn:adsk.eagle:package:13139/1"/>
 <part name="IC4" library="linear" library_urn="urn:adsk.eagle:library:262" deviceset="78*" device="T" package3d_urn="urn:adsk.eagle:package:16414/1" technology="05"/>
 <part name="IC5" library="linear" library_urn="urn:adsk.eagle:library:262" deviceset="78*" device="T" package3d_urn="urn:adsk.eagle:package:16414/1" technology="05"/>
 <part name="Q2" library="transistor-fet" deviceset="VN2222KM" device="" value="2N7000 N-CH"/>
